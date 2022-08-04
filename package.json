@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/lublak/eslint-config-n8n-nodes-base.git"
   },
-  "author": "",
+  "author": "lublak",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lublak/eslint-config-n8n-nodes-base/issues"

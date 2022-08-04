@@ -1,7 +1,12 @@
 {
   "name": "eslint-config-n8n-nodes-base",
   "version": "1.0.0",
-  "description": "",
+  "description": "The eslint config for n8n-nodes-base.",
+  "keywords": [
+    "n8n-community-node-package",
+    "eslint",
+    "eslintconfig"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

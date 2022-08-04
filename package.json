@@ -2,6 +2,9 @@
   "name": "eslint-config-n8n-nodes-base",
   "version": "1.0.0",
   "description": "The eslint config for n8n-nodes-base.",
+  "scripts": {
+    "format": "prettier index.js --write"
+  },
   "keywords": [
     "n8n-community-node-package",
     "eslint",
@@ -22,7 +25,11 @@
     "eslint": "^8.21.0",
     "eslint-config-n8n-nodes-base": "^1.0.0",
     "eslint-plugin-deprecation": "^1.3.2",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsdoc": "^39.3.4",
     "eslint-plugin-n8n-nodes-base": "^1.5.5"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
   }
 }

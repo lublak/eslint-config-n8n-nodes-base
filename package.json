@@ -6,7 +6,6 @@
     "format": "prettier index.js --write"
   },
   "keywords": [
-    "n8n-community-node-package",
     "eslint",
     "eslintconfig"
   ],

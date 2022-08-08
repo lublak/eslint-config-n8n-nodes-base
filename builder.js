@@ -40,15 +40,18 @@ for(let pd of peerDependencies) {
     }
   } else if(pd == 'eslint-plugin-n8n-nodes-base') {
     const jsonRules = {};
-    const otherRules = {};
+    const credRules = {};
+    const nodeRules = {};
     basePlugins.push('eslint-plugin-n8n-nodes-base');
     const pdr = require('eslint-plugin-n8n-nodes-base');
     const pdrrules = Object.keys(pdr.rules).sort();
     for(let r of pdrrules) {
       if(r.startsWith('community-package-json-')) {
         jsonRules[`n8n-nodes-base/${r}`] = 'off';
-      } else{
-        otherRules[`n8n-nodes-base/${r}`] = 'off';
+      } else if(r.startsWith('cred-')) {
+        credRules[`n8n-nodes-base/${r}`] = 'off';
+      } else if(r.startsWith('node-')) {
+        nodeRules[`n8n-nodes-base/${r}`] = 'off';
       }
     }
     config.overrides.push({
@@ -59,12 +62,12 @@ for(let pd of peerDependencies) {
     config.overrides.push({
 			files: ['./credentials/**/*.ts'],
 			plugins: ['eslint-plugin-n8n-nodes-base'],
-			rules: otherRules,
+			rules: credRules,
 		});
     config.overrides.push({
 			files: ['./nodes/**/*.ts'],
 			plugins: ['eslint-plugin-n8n-nodes-base'],
-			rules: otherRules,
+			rules: nodeRules,
 		});
   } else if(pd == '@typescript-eslint/eslint-plugin') {
     basePlugins.push('@typescript-eslint');

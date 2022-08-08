@@ -1,7 +1,20 @@
 const pack = require('./package.json');
 const path = require('path');
 const deepmerge = require('deepmerge')
-const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray
+const combineMerge = (target, source, options) => {
+  const destination = target.slice()
+
+  source.forEach((item, index) => {
+      if (typeof destination[index] === 'undefined') {
+          destination[index] = options.cloneUnlessOtherwiseSpecified(item, options)
+      } else if (options.isMergeableObject(item)) {
+          destination[index] = merge(target[index], item, options)
+      } else if (target.indexOf(item) === -1) {
+          destination.push(item)
+      }
+  })
+  return destination
+}
 const fs = require('fs');
 
 const baseFiles = ['./credentials/**/*.ts', './nodes/**/*.ts'];
@@ -87,4 +100,4 @@ for(let pd of peerDependencies) {
   }
 }
 const current = require('./index.js');
-fs.writeFileSync('index.js', `module.exports = ${JSON.stringify(deepmerge(current, config, { arrayMerge: overwriteMerge }), null, 2)};`);
+fs.writeFileSync('index.js', `module.exports = ${JSON.stringify(deepmerge(current, config, { arrayMerge: combineMerge }), null, 2)};`);

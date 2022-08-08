@@ -1,7 +1,7 @@
 const pack = require('./package.json');
 const path = require('path');
 const deepmerge = require('deepmerge')
-const stringify = require('fast-json-stable-stringify');
+const overwriteMerge = (destinationArray, sourceArray, options) => sourceArray
 const fs = require('fs');
 
 const baseFiles = ['./credentials/**/*.ts', './nodes/**/*.ts'];
@@ -85,9 +85,6 @@ for(let pd of peerDependencies) {
       baseConfigRules[`${name}/${r}`] = 'off';
     }
   }
-  
-  //console.log(pdr);
 }
-
 const current = require('./index.js');
-fs.writeFileSync('index.js', `module.exports = ${JSON.stringify(deepmerge(current, config), null, 2)};`);
+fs.writeFileSync('index.js', `module.exports = ${JSON.stringify(deepmerge(current, config, { arrayMerge: overwriteMerge }), null, 2)};`);

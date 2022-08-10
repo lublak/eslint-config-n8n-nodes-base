@@ -56,9 +56,9 @@ module.exports = {
 				'n8n-nodes-base/cred-class-field-display-name-miscased': 'error', //`displayName` field in credential class must be title cased.
 				'n8n-nodes-base/cred-class-field-display-name-missing-api': 'error', //`displayName` field in credential class must be end with `API`.
 				'n8n-nodes-base/cred-class-field-display-name-missing-oauth2': 'error', //`displayName` field in credential class must mention `OAuth2` if the credential is OAuth2.
-				'n8n-nodes-base/cred-class-field-documentation-url-miscased': 'error', //`documentationUrl` field in credential class must be camel cased. Only applicable to nodes in the main repository.
-				'n8n-nodes-base/cred-class-field-documentation-url-missing': 'error', //`documentationUrl` field in credential class must be present.
-				'n8n-nodes-base/cred-class-field-documentation-url-not-http-url': 'error', //`documentationUrl` field in credential class must be an HTTP URL. Only applicable to community credentials.
+				'n8n-nodes-base/cred-class-field-documentation-url-miscased': 'off', //`documentationUrl` field in credential class must be camel cased. Only applicable to nodes in the main repository.
+				'n8n-nodes-base/cred-class-field-documentation-url-missing': 'off', //`documentationUrl` field in credential class must be present.
+				'n8n-nodes-base/cred-class-field-documentation-url-not-http-url': 'off', //`documentationUrl` field in credential class must be an HTTP URL. Only applicable to community credentials.
 				'n8n-nodes-base/cred-class-field-name-missing-oauth2': 'error', //`name` field in credential class must mention `OAuth2` if the credential is OAuth2.
 				'n8n-nodes-base/cred-class-field-name-unsuffixed': 'error', //`name` field in credential class must be suffixed with `-Api`.
 				'n8n-nodes-base/cred-class-field-name-uppercase-first-char': 'error', //First char in `name` in credential class must be lowercase.

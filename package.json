@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "The eslint config for n8n-nodes-base.",
   "scripts": {
-    "format": "prettier index.js --write"
+    "format": "prettier *.js --write"
   },
   "keywords": [
     "eslint",
@@ -12,7 +12,7 @@
   "main": "index.js",
   "files": [
     "index.js",
-    "LICENSE"
+    "prettierrc.js"
   ],
   "repository": {
     "type": "git",
@@ -32,7 +32,10 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsdoc": "^39.3.4",
     "eslint-plugin-n8n-nodes-base": "^1.5.5",
-    "eslint-plugin-promise": "^6.0.0"
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "prettier": "^2.7.1",
+    "prettier-plugin-jsdoc": "^0.3.38"
   },
   "devDependencies": {
     "@babel/generator": "^7.18.12",
@@ -43,8 +46,10 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsdoc": "^39.3.4",
     "eslint-plugin-n8n-nodes-base": "^1.5.5",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.0.0",
     "prettier": "^2.7.1",
+    "prettier-plugin-jsdoc": "^0.3.38",
     "typescript": "^4.7.4"
   }
 }

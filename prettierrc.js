@@ -48,4 +48,11 @@ module.exports = {
    * https://prettier.io/docs/en/options.html#print-width
    */
   printWidth: 100,
+
+  plugin: ['prettier-plugin-jsdoc'],
+
+  jsdocDescriptionWithDot: true,
+  jsdocVerticalAlignment: true,
+  jsdocSingleLineComment: false,
+  jsdocPreferCodeFences: true,
 };

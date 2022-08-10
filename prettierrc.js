@@ -49,7 +49,7 @@ module.exports = {
    */
   printWidth: 100,
 
-  plugin: ['prettier-plugin-jsdoc'],
+  plugins: ['prettier-plugin-jsdoc'],
 
   jsdocDescriptionWithDot: true,
   jsdocVerticalAlignment: true,

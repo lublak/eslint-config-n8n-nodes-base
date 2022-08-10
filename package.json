@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-n8n-nodes-base",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The eslint config for n8n-nodes-base.",
   "scripts": {
     "format": "prettier *.js --write"

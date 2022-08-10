@@ -1,4 +1,6 @@
 const path = require('path');
+const { default: generate } = require('@babel/generator');
+const types = require('@babel/types');
 
 const pack = require('./package.json');
 const ix = require('./index.js');
@@ -85,25 +87,28 @@ function getConfig() {
 
   const rules = getAllRules();
 
-  function getCurrentValue(currentValues, rule) {
-    return currentValues && currentValues.rules && currentValues.rules[rule] ? currentValues.rules[rule] : 'off';
+  function getCurrentValue(currentValues, rulename, rule) {
+    return {
+      value: currentValues && currentValues.rules && currentValues.rules[rulename] ? currentValues.rules[rulename] : (rule && rule.meta && rule.meta.docs ? (rule.meta.docs.recommended ? 'error' : 'off') : 'off'),
+      description: rule && rule.meta && rule.meta.docs ? rule.meta.docs.description : null
+    };
   }
 
   for(const plugin in rules) {
     if(plugin == 'eslint-plugin-n8n-nodes-base') {
       for(const rule in rules[plugin]) {
         if(rule.startsWith('n8n-nodes-base/community-package-json-')) {
-          jsonRules[rule] = getCurrentValue(jsonRulesCurrentValues, rule);
+          jsonRules[rule] = getCurrentValue(jsonRulesCurrentValues, rule, rules[plugin][rule]);
         } else if(rule.startsWith('n8n-nodes-base/cred-')) {
-          credentialsRules[rule] = getCurrentValue(credentialsRulesCurrentValues, rule);
+          credentialsRules[rule] = getCurrentValue(credentialsRulesCurrentValues, rule, rules[plugin][rule]);
         } else if(rule.startsWith('n8n-nodes-base/node-')) {
-          nodesRules[rule] = getCurrentValue(nodesRulesCurrentValues, rule);
+          nodesRules[rule] = getCurrentValue(nodesRulesCurrentValues, rule, rules[plugin][rule]);
         }
       }
     } else if(Object.keys(rules[plugin]).length > 0) {
       basePlugins.push(plugin);
       for(const rule in rules[plugin]) {
-        baseRules[rule] = getCurrentValue(baseRulesCurrentValues, rule);
+        baseRules[rule] = getCurrentValue(baseRulesCurrentValues, rule, rules[plugin][rule]);
       }
     }
   }
@@ -137,7 +142,42 @@ function getConfig() {
   };
 }
 
+function buildAst(value) {
+  switch(typeof value) {
+    case 'number':
+      return types.numericLiteral(value);
+    case 'string':
+      return types.stringLiteral(value);
+    case 'boolean':
+      return types.booleanLiteral(value);
+    default:
+      if (Array.isArray(value)) return types.arrayExpression(value.map(buildAst));
+      return types.objectExpression(Object.keys(value).map(v => types.objectProperty(types.stringLiteral(v), buildAst(value[v]))));
+  }
+}
+
+function getConfigAst() {
+  const config = getConfig();
+  const overrides = config.overrides;
+  delete config.overrides;
+  const configAst = buildAst(config);
+  configAst.properties.push(types.objectProperty(types.stringLiteral('overrides'), types.arrayExpression(overrides.map(value => types.objectExpression([
+    types.objectProperty(types.stringLiteral('files'), buildAst(value.files)),
+    types.objectProperty(types.stringLiteral('plugins'), buildAst(value.plugins)),
+    types.objectProperty(types.stringLiteral('rules'), types.objectExpression(
+      Object.keys(value.rules).map(rule => value.rules[rule].description ?
+        types.addComment(types.objectProperty(types.stringLiteral(rule), buildAst(value.rules[rule].value)), 'trailing' ,value.rules[rule].description, true)
+        : types.objectProperty(types.stringLiteral(rule), buildAst(value.rules[rule].value))
+      )
+    )),
+  ])))));
+  return configAst;
+}
+
+function getStringConfig() {
+  return generate(getConfigAst()).code;
+}
+
 module.exports = {
-  getAllRules: getAllRules,
-  getConfig: getConfig
+  getStringConfig: getStringConfig
 };

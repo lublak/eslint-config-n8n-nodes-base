@@ -28,12 +28,12 @@ module.exports = {
 			files: ['package.json'],
 			plugins: ['eslint-plugin-n8n-nodes-base'],
 			rules: {
-				'n8n-nodes-base/community-package-json-author-email-still-default': 'error', //The `author.email` value in the `package.json` of a community package must be different from the default value `jan@n8n.io`.
+				'n8n-nodes-base/community-package-json-author-email-still-default': 'off', //The `author.email` value in the `package.json` of a community package must be different from the default value `jan@n8n.io`.
 				'n8n-nodes-base/community-package-json-author-missing': 'error', //The `author` key must be present in the `package.json` of a community package.
 				'n8n-nodes-base/community-package-json-author-name-missing': 'error', //The `author.name` key must be present in the `package.json` of a community package.
-				'n8n-nodes-base/community-package-json-author-name-still-default': 'error', //The `author.name` value in the `package.json` of a community package must be different from the default value `Jan Oberhauser`.
+				'n8n-nodes-base/community-package-json-author-name-still-default': 'off', //The `author.name` value in the `package.json` of a community package must be different from the default value `Jan Oberhauser`.
 				'n8n-nodes-base/community-package-json-description-missing': 'error', //The `description` key must be present in the `package.json` of a community package.
-				'n8n-nodes-base/community-package-json-description-still-default': 'error', //The `description` value in the `package.json` of a community package must be different from the default value `Example starter module for custom n8n nodes.`.
+				'n8n-nodes-base/community-package-json-description-still-default': 'off', //The `description` value in the `package.json` of a community package must be different from the default value `Example starter module for custom n8n nodes.`.
 				'n8n-nodes-base/community-package-json-keywords-missing': 'error', //The `keywords` key must be present in the `package.json` of a community package.
 				'n8n-nodes-base/community-package-json-keywords-without-official-tag': 'error', //The `keywords` value in the `package.json` of a community package must be an array containing the value `'n8n-community-node-package'`.
 				'n8n-nodes-base/community-package-json-license-missing': 'error', //The `description` key must be present in the `package.json` of a community package.
@@ -44,8 +44,8 @@ module.exports = {
 				'n8n-nodes-base/community-package-json-n8n-nodes-empty': 'error', //The `n8n.nodes` value in the `package.json` of a community package must contain at least one filepath.
 				'n8n-nodes-base/community-package-json-n8n-nodes-missing': 'error', //The `n8n.nodes` key must be present in the `package.json` of a community package.
 				'n8n-nodes-base/community-package-json-name-missing': 'error', //The `name` key must be present in the `package.json` of a community package.
-				'n8n-nodes-base/community-package-json-name-still-default': 'error', //The `name` key in the `package.json` of a community package must be different from the default value `n8n-nodes-starter`.
-				'n8n-nodes-base/community-package-json-repository-url-still-default': 'error', //The `repository.url` value in the `package.json` of a community package must be different from the default value `git+https://github.com/n8n-io/n8n-nodes-starter.git`.
+				'n8n-nodes-base/community-package-json-name-still-default': 'off', //The `name` key in the `package.json` of a community package must be different from the default value `n8n-nodes-starter`.
+				'n8n-nodes-base/community-package-json-repository-url-still-default': 'off', //The `repository.url` value in the `package.json` of a community package must be different from the default value `git+https://github.com/n8n-io/n8n-nodes-starter.git`.
 				'n8n-nodes-base/community-package-json-version-missing': 'error', //The `version` key must be present in the `package.json` of a community package.
 			},
 		},

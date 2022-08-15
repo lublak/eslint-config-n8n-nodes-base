@@ -128,7 +128,7 @@ function getConfig() {
         }
       }
     } else if (Object.keys(rules[plugin]).length > 0) {
-      basePlugins.push(plugin);
+      if (plugin != 'eslint') basePlugins.push(plugin);
       for (const rule in rules[plugin]) {
         baseRules[rule] = getCurrentValue(baseRulesCurrentValues, rule, rules[plugin][rule]);
       }
@@ -159,6 +159,16 @@ function getConfig() {
         },
         ignoreInternal: true,
       },
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.d.ts'],
+      },
+      'import/resolver': {
+        node: {
+          extensions: ['.js', '.json', '.ts', '.d.ts'],
+        },
+      },
+      'import/extensions': ['.js', '.ts', '.d.ts'],
+      'import/external-module-folders': ['node_modules', 'node_modules/@types'],
     },
     overrides: overrides,
   };

@@ -22,30 +22,60 @@ module.exports = {
       },
       ignoreInternal: true,
     },
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.d.ts'],
+    },
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.json', '.ts', '.d.ts'],
+      },
+    },
+    'import/extensions': ['.js', '.ts', '.d.ts'],
+    'import/external-module-folders': ['node_modules', 'node_modules/@types'],
   },
   overrides: [
     {
       files: ['package.json'],
       plugins: ['eslint-plugin-n8n-nodes-base'],
       rules: {
-        'n8n-nodes-base/community-package-json-author-email-still-default': 'off', //The `author.email` value in the `package.json` of a community package must be different from the default value `jan@n8n.io`.
+        'n8n-nodes-base/community-package-json-author-email-still-default': 'off', //The `author.email` value in the `package.json` of a community package must be different from the default value `` or a user-defined default with `authorEmail`.
         'n8n-nodes-base/community-package-json-author-missing': 'error', //The `author` key must be present in the `package.json` of a community package.
         'n8n-nodes-base/community-package-json-author-name-missing': 'error', //The `author.name` key must be present in the `package.json` of a community package.
-        'n8n-nodes-base/community-package-json-author-name-still-default': 'off', //The `author.name` value in the `package.json` of a community package must be different from the default value `Jan Oberhauser`.
+        'n8n-nodes-base/community-package-json-author-name-still-default': [
+          'error',
+          {
+            authorName: '${{#REPO_OWNER#}}',
+          },
+        ], //The `author.name` value in the `package.json` of a community package must be different from the default value `` or a user-defined default with `authorName`.
         'n8n-nodes-base/community-package-json-description-missing': 'error', //The `description` key must be present in the `package.json` of a community package.
-        'n8n-nodes-base/community-package-json-description-still-default': 'off', //The `description` value in the `package.json` of a community package must be different from the default value `Example starter module for custom n8n nodes.`.
+        'n8n-nodes-base/community-package-json-description-still-default': [
+          'error',
+          {
+            description: 'This is a basis for community n8n nodes.',
+          },
+        ], //The `description` value in the `package.json` of a community package must be different from the default value `` or a user-defined default value with `description`.
         'n8n-nodes-base/community-package-json-keywords-missing': 'error', //The `keywords` key must be present in the `package.json` of a community package.
         'n8n-nodes-base/community-package-json-keywords-without-official-tag': 'error', //The `keywords` value in the `package.json` of a community package must be an array containing the value `'n8n-community-node-package'`.
         'n8n-nodes-base/community-package-json-license-missing': 'error', //The `description` key must be present in the `package.json` of a community package.
-        'n8n-nodes-base/community-package-json-license-not-default': 'error', //The `license` key in the `package.json` of a community package must be the default value `MIT`.
+        'n8n-nodes-base/community-package-json-license-not-default': 'warn', //The `license` key in the `package.json` of a community package must be the default value `MIT`.
         'n8n-nodes-base/community-package-json-n8n-api-version-missing': 'error', //The `n8n.n8nNodesApiVersion` key must be present in the `package.json` of a community package.
         'n8n-nodes-base/community-package-json-n8n-api-version-not-number': 'error', //The `n8n.n8nNodesApiVersion` value in the `package.json` of a community package must be a number.
         'n8n-nodes-base/community-package-json-n8n-missing': 'error', //The `n8n` key must be present in the `package.json` of a community package.
         'n8n-nodes-base/community-package-json-n8n-nodes-empty': 'error', //The `n8n.nodes` value in the `package.json` of a community package must contain at least one filepath.
         'n8n-nodes-base/community-package-json-n8n-nodes-missing': 'error', //The `n8n.nodes` key must be present in the `package.json` of a community package.
         'n8n-nodes-base/community-package-json-name-missing': 'error', //The `name` key must be present in the `package.json` of a community package.
-        'n8n-nodes-base/community-package-json-name-still-default': 'off', //The `name` key in the `package.json` of a community package must be different from the default value `n8n-nodes-starter`.
-        'n8n-nodes-base/community-package-json-repository-url-still-default': 'off', //The `repository.url` value in the `package.json` of a community package must be different from the default value `git+https://github.com/n8n-io/n8n-nodes-starter.git`.
+        'n8n-nodes-base/community-package-json-name-still-default': [
+          'error',
+          {
+            name: '${{#REPO_NAME#}}',
+          },
+        ], //The `name` key in the `package.json` of a community package must be different from the default value `n8n-nodes-<...>` or a user-defined default with `name`.
+        'n8n-nodes-base/community-package-json-repository-url-still-default': [
+          'error',
+          {
+            repositoryUrl: 'git+https://github.com/${{#REPO_FULLNAME#}}.git',
+          },
+        ], //The `repository.url` value in the `package.json` of a community package must be different from the default value `https://github.com/<...>/n8n-nodes-<...>.git` or a user-defined default with `repositoryUrl`.
         'n8n-nodes-base/community-package-json-version-missing': 'error', //The `version` key must be present in the `package.json` of a community package.
       },
     },
@@ -82,13 +112,11 @@ module.exports = {
         'n8n-nodes-base/node-class-description-missing-subtitle': 'error', //`subtitle` in node class description must be present.
         'n8n-nodes-base/node-class-description-name-unsuffixed-trigger-node': 'error', //`name` in node class description for trigger node must be suffixed with `-Trigger`.
         'n8n-nodes-base/node-class-description-outputs-wrong': 'error', //The number of `outputs` in node class description for any node must be one, or two for If node, or four for Switch node.
-        'n8n-nodes-base/node-dirname-against-convention': 'error', //Node dirname must match node filename, excluding the filename suffix. Example: `Test` node dirname matches `Test` section of `Test.node.ts` node filename.
+        'n8n-nodes-base/node-dirname-against-convention': 'off', //Node dirname must match node filename, excluding the filename suffix. Example: `Test` node dirname matches `Test` section of `Test.node.ts` node filename.
         'n8n-nodes-base/node-execute-block-double-assertion-for-items': 'error', //In the `execute()` method there is no need to double assert the type of `items.length`.
         'n8n-nodes-base/node-execute-block-error-missing-item-index': 'error', //In the operations in the `execute()` method in a node, `NodeApiError` and `NodeOperationError` must specify `itemIndex` as the third argument.
         'n8n-nodes-base/node-execute-block-missing-continue-on-fail': 'error', //The `execute()` method in a node must implement `continueOnFail` in a try-catch block.
-        'n8n-nodes-base/node-execute-block-operation-missing-plural-pairing': 'error', //Every `getAll` operation in the `execute()` method in a node must implement plural pairing.
-        'n8n-nodes-base/node-execute-block-operation-missing-singular-pairing': 'error', //Every non-`getAll` operation in the `execute()` method in a node must implement singular pairing.
-        'n8n-nodes-base/node-execute-block-wrong-error-thrown': 'error', //The `execute()` method in a node may only throw `NodeApiError` for failed network requests and `NodeOperationError` for internal errors, not the built-in `Error`. Refer to [`NodeErrors.ts`](https://github.com/n8n-io/n8n/blob/master/packages/workflow/src/NodeErrors.ts).
+        'n8n-nodes-base/node-execute-block-wrong-error-thrown': 'error', //The `execute()` method in a node may only throw `NodeApiError` for failed API requests and `NodeOperationError` for internal errors, not the built-in `Error`. Refer to [`NodeErrors.ts`](https://github.com/n8n-io/n8n/blob/master/packages/workflow/src/NodeErrors.ts).
         'n8n-nodes-base/node-filename-against-convention': 'error', //Node filename must match `name` in node class description, excluding the filename suffix. Example: `Test.node.ts` matches `Test` in property `Test.description.name`.
         'n8n-nodes-base/node-param-array-type-assertion': 'error', //Array of node parameters must be typed, not type-asserted.
         'n8n-nodes-base/node-param-collection-type-unsorted-items': 'error', //Items in collection-type node parameter must be alphabetized by `name` if five or more than five.
@@ -160,6 +188,7 @@ module.exports = {
         'n8n-nodes-base/node-param-resource-with-plural-option': 'error', //Option `name` for a Resource node parameter must be singular.
         'n8n-nodes-base/node-param-resource-without-no-data-expression': 'error', //`noDataExpression` in a Resource node parameter must be present and enabled.
         'n8n-nodes-base/node-param-type-options-missing-from-limit': 'error', //`typeOptions` in Limit node parameter must be present.
+        'n8n-nodes-base/node-param-type-options-missing-from-password': 'error', //`typeOptions.password` must be set to `true` in a Password node parameter, to obscure the password input
         'n8n-nodes-base/node-resource-description-filename-against-convention': 'error', //Resource description file must use singular form. Example: `UserDescription.ts`, not `UsersDescription.ts`.
       },
     },
@@ -167,12 +196,12 @@ module.exports = {
       files: ['./credentials/**/*.ts', './nodes/**/*.ts'],
       plugins: [
         '@typescript-eslint',
-        'eslint',
         'eslint-plugin-deprecation',
         'eslint-plugin-import',
         'eslint-plugin-jsdoc',
         'eslint-plugin-prettier',
         'eslint-plugin-promise',
+        'eslint-plugin-simple-import-sort',
       ],
       rules: {
         '@typescript-eslint/adjacent-overload-signatures': 'error', //Require that member overloads be consecutive
@@ -200,7 +229,7 @@ module.exports = {
         '@typescript-eslint/consistent-type-definitions': 'error', //Enforce type definitions to consistently use either `interface` or `type`
         '@typescript-eslint/consistent-type-exports': 'off', //Enforce consistent usage of type exports
         '@typescript-eslint/consistent-type-imports': 'off', //Enforce consistent usage of type imports
-        '@typescript-eslint/default-param-last': 'off', //Enforce default parameters to be last
+        '@typescript-eslint/default-param-last': 'error', //Enforce default parameters to be last
         '@typescript-eslint/dot-notation': 'error', //Enforce dot notation whenever possible
         '@typescript-eslint/explicit-function-return-type': 'off', //Require explicit return types on functions and class methods
         '@typescript-eslint/explicit-member-accessibility': 'off', //Require explicit accessibility modifiers on class properties and methods
@@ -213,12 +242,12 @@ module.exports = {
         '@typescript-eslint/member-delimiter-style': 'off', //Require a specific member delimiter style for interfaces and type literals
         '@typescript-eslint/member-ordering': 'off', //Require a consistent member declaration order
         '@typescript-eslint/method-signature-style': 'off', //Enforce using a particular method signature syntax
-        '@typescript-eslint/naming-convention': 'off', //Enforce naming conventions for everything across a codebase
+        '@typescript-eslint/naming-convention': 'error', //Enforce naming conventions for everything across a codebase
         '@typescript-eslint/no-array-constructor': 'error', //Disallow generic `Array` constructors
         '@typescript-eslint/no-base-to-string': 'error', //Require `.toString()` to only be called on objects which provide useful information when stringified
         '@typescript-eslint/no-confusing-non-null-assertion': 'error', //Disallow non-null assertion in locations that may be confusing
         '@typescript-eslint/no-confusing-void-expression': 'off', //Require expressions of type void to appear in statement position
-        '@typescript-eslint/no-dupe-class-members': 'off', //Disallow duplicate class members
+        '@typescript-eslint/no-dupe-class-members': 'error', //Disallow duplicate class members
         '@typescript-eslint/no-duplicate-enum-values': 'error', //Disallow duplicate enum member values
         '@typescript-eslint/no-dynamic-delete': 'error', //Disallow using the `delete` operator on computed key expressions
         '@typescript-eslint/no-empty-function': 'error', //Disallow empty functions
@@ -231,15 +260,15 @@ module.exports = {
         ], //Disallow the `any` type
         '@typescript-eslint/no-extra-non-null-assertion': 'error', //Disallow extra non-null assertion
         '@typescript-eslint/no-extra-parens': 'off', //Disallow unnecessary parentheses
-        '@typescript-eslint/no-extra-semi': 'off', //Disallow unnecessary semicolons
+        '@typescript-eslint/no-extra-semi': 'error', //Disallow unnecessary semicolons
         '@typescript-eslint/no-extraneous-class': 'error', //Disallow classes used as namespaces
         '@typescript-eslint/no-floating-promises': 'error', //Require Promise-like statements to be handled appropriately
         '@typescript-eslint/no-for-in-array': 'error', //Disallow iterating over an array with a for-in loop
         '@typescript-eslint/no-implied-eval': 'error', //Disallow the use of `eval()`-like methods
-        '@typescript-eslint/no-inferrable-types': 'off', //Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean
+        '@typescript-eslint/no-inferrable-types': 'error', //Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean
         '@typescript-eslint/no-invalid-this': 'off', //Disallow `this` keywords outside of classes or class-like objects
         '@typescript-eslint/no-invalid-void-type': 'error', //Disallow `void` type outside of generic or return types
-        '@typescript-eslint/no-loop-func': 'off', //Disallow function declarations that contain unsafe references inside loop statements
+        '@typescript-eslint/no-loop-func': 'error', //Disallow function declarations that contain unsafe references inside loop statements
         '@typescript-eslint/no-loss-of-precision': 'error', //Disallow literal numbers that lose precision
         '@typescript-eslint/no-magic-numbers': 'off', //Disallow magic numbers
         '@typescript-eslint/no-meaningless-void-operator': 'error', //Disallow the `void` operator except when used to discard a value
@@ -268,9 +297,9 @@ module.exports = {
         '@typescript-eslint/no-unsafe-call': 'error', //Disallow calling a value with type `any`
         '@typescript-eslint/no-unsafe-member-access': 'error', //Disallow member access on a value with type `any`
         '@typescript-eslint/no-unsafe-return': 'error', //Disallow returning a value with type `any` from a function
-        '@typescript-eslint/no-unused-expressions': 'off', //Disallow unused expressions
+        '@typescript-eslint/no-unused-expressions': 'error', //Disallow unused expressions
         '@typescript-eslint/no-unused-vars': 'error', //Disallow unused variables
-        '@typescript-eslint/no-use-before-define': 'off', //Disallow the use of variables before they are defined
+        '@typescript-eslint/no-use-before-define': 'error', //Disallow the use of variables before they are defined
         '@typescript-eslint/no-useless-constructor': 'error', //Disallow unnecessary constructors
         '@typescript-eslint/no-useless-empty-export': 'off', //Disallow empty exports that don't change anything in a module file
         '@typescript-eslint/no-var-requires': 'error', //Disallow `require` statements except in import statements
@@ -300,7 +329,7 @@ module.exports = {
         '@typescript-eslint/require-await': 'error', //Disallow async functions which have no `await` expression
         '@typescript-eslint/restrict-plus-operands': 'error', //Require both operands of addition to have type `number` or `string`
         '@typescript-eslint/restrict-template-expressions': 'error', //Enforce template literal expressions to be of `string` type
-        '@typescript-eslint/return-await': 'error', //Enforce consistent returning of awaited values
+        '@typescript-eslint/return-await': 'off', //Enforce consistent returning of awaited values
         '@typescript-eslint/semi': 'off', //Require or disallow semicolons instead of ASI
         '@typescript-eslint/sort-type-union-intersection-members': 'off', //Enforce members of a type union/intersection to be sorted alphabetically
         '@typescript-eslint/space-before-blocks': 'off', //Enforce consistent spacing before blocks
@@ -310,16 +339,7 @@ module.exports = {
         '@typescript-eslint/switch-exhaustiveness-check': 'off', //Require switch-case statements to be exhaustive with union type
         '@typescript-eslint/triple-slash-reference': 'error', //Disallow certain triple slash directives in favor of ES6-style import declarations
         '@typescript-eslint/type-annotation-spacing': 'off', //Require consistent spacing around type annotations
-        '@typescript-eslint/typedef': [
-          'error',
-          {
-            arrowParameter: true,
-            memberVariableDeclaration: true,
-            parameter: true,
-            propertyDeclaration: true,
-            variableDeclaration: true,
-          },
-        ], //Require type annotations in certain places
+        '@typescript-eslint/typedef': 'off', //Require type annotations in certain places
         '@typescript-eslint/unbound-method': 'error', //Enforce unbound methods are called with their expected scope
         '@typescript-eslint/unified-signatures': 'error', //Disallow two overloads that could be unified into one with a union or an optional/rest parameter
         'accessor-pairs': 'off', //Enforce getter and setter pairs in objects and classes
@@ -401,7 +421,7 @@ module.exports = {
         'no-compare-neg-zero': 'error', //Disallow comparing against -0
         'no-cond-assign': 'error', //Disallow assignment operators in conditional expressions
         'no-confusing-arrow': 'off', //Disallow arrow functions where they could be confused with comparisons
-        'no-console': 'error', //Disallow the use of `console`
+        'no-console': 'off', //Disallow the use of `console`
         'no-const-assign': 'error', //Disallow reassigning `const` variables
         'no-constant-binary-expression': 'off', //Disallow expressions where the operation doesn't affect the value
         'no-constant-condition': 'error', //Disallow constant expressions in conditions
@@ -412,7 +432,7 @@ module.exports = {
         'no-delete-var': 'error', //Disallow deleting variables
         'no-div-regex': 'off', //Disallow division operators explicitly at the beginning of regular expressions
         'no-dupe-args': 'error', //Disallow duplicate arguments in `function` definitions
-        'no-dupe-class-members': 'error', //Disallow duplicate class members
+        'no-dupe-class-members': 'off', //Disallow duplicate class members
         'no-dupe-else-if': 'error', //Disallow duplicate conditions in if-else-if chains
         'no-dupe-keys': 'error', //Disallow duplicate keys in object literals
         'no-duplicate-case': 'error', //Disallow duplicate case labels
@@ -435,7 +455,7 @@ module.exports = {
         'no-extra-boolean-cast': 'error', //Disallow unnecessary boolean casts
         'no-extra-label': 'off', //Disallow unnecessary labels
         'no-extra-parens': 'off', //Disallow unnecessary parentheses
-        'no-extra-semi': 'off', //Disallow unnecessary semicolons
+        'no-extra-semi': 'error', //Disallow unnecessary semicolons
         'no-fallthrough': 'error', //Disallow fallthrough of `case` statements
         'no-floating-decimal': 'off', //Disallow leading or trailing decimal points in numeric literals
         'no-func-assign': 'error', //Disallow reassigning `function` declarations
@@ -455,11 +475,11 @@ module.exports = {
         'no-lone-blocks': 'off', //Disallow unnecessary nested blocks
         'no-lonely-if': 'off', //Disallow `if` statements as the only statement in `else` blocks
         'no-loop-func': 'off', //Disallow function declarations that contain unsafe references inside loop statements
-        'no-loss-of-precision': 'error', //Disallow literal numbers that lose precision
+        'no-loss-of-precision': 'off', //Disallow literal numbers that lose precision
         'no-magic-numbers': 'off', //Disallow magic numbers
         'no-misleading-character-class': 'error', //Disallow characters which are made with multiple code points in character class syntax
         'no-mixed-operators': 'off', //Disallow mixed binary operators
-        'no-mixed-spaces-and-tabs': 'off', //Disallow mixed spaces and tabs for indentation
+        'no-mixed-spaces-and-tabs': 'error', //Disallow mixed spaces and tabs for indentation
         'no-multi-assign': 'off', //Disallow use of chained assignment expressions
         'no-multi-spaces': 'off', //Disallow multiple spaces
         'no-multi-str': 'off', //Disallow multiline strings
@@ -507,7 +527,7 @@ module.exports = {
         'no-undef-init': 'off', //Disallow initializing variables to `undefined`
         'no-undefined': 'off', //Disallow the use of `undefined` as an identifier
         'no-underscore-dangle': 'off', //Disallow dangling underscores in identifiers
-        'no-unexpected-multiline': 'off', //Disallow confusing multiline expressions
+        'no-unexpected-multiline': 'error', //Disallow confusing multiline expressions
         'no-unmodified-loop-condition': 'off', //Disallow unmodified loop conditions
         'no-unneeded-ternary': 'off', //Disallow ternary operators when simpler alternatives exist
         'no-unreachable': 'error', //Disallow unreachable code after `return`, `throw`, `continue`, and `break` statements
@@ -518,7 +538,7 @@ module.exports = {
         'no-unused-expressions': 'off', //Disallow unused expressions
         'no-unused-labels': 'error', //Disallow unused labels
         'no-unused-private-class-members': 'off', //Disallow unused private class members
-        'no-unused-vars': 'off', //Disallow unused variables
+        'no-unused-vars': 'error', //Disallow unused variables
         'no-use-before-define': 'off', //Disallow the use of variables before they are defined
         'no-useless-backreference': 'error', //Disallow useless backreferences in regular expressions
         'no-useless-call': 'off', //Disallow unnecessary calls to `.call()` and `.apply()`
@@ -592,12 +612,12 @@ module.exports = {
         'yield-star-spacing': 'off', //Require or disallow spacing around the `*` in `yield*` expressions
         yoda: 'off', //Require or disallow "Yoda" conditions
         'deprecation/deprecation': 'error', //Do not use deprecated APIs.
-        'import/no-unresolved': 'off',
-        'import/named': 'off',
-        'import/default': 'off',
-        'import/namespace': 'off',
+        'import/no-unresolved': 'error',
+        'import/named': 'error',
+        'import/default': 'error',
+        'import/namespace': 'error',
         'import/no-namespace': 'off',
-        'import/export': 'off',
+        'import/export': 'error',
         'import/no-mutable-exports': 'off',
         'import/extensions': 'off',
         'import/no-restricted-paths': 'off',
@@ -614,15 +634,15 @@ module.exports = {
         'import/no-unused-modules': 'off',
         'import/no-commonjs': 'off',
         'import/no-amd': 'off',
-        'import/no-duplicates': 'off',
-        'import/first': 'off',
+        'import/no-duplicates': 'error',
+        'import/first': 'error',
         'import/max-dependencies': 'off',
         'import/no-extraneous-dependencies': 'off',
         'import/no-absolute-path': 'off',
         'import/no-nodejs-modules': 'off',
         'import/no-webpack-loader-syntax': 'off',
         'import/order': 'off',
-        'import/newline-after-import': 'off',
+        'import/newline-after-import': 'error',
         'import/prefer-default-export': 'off',
         'import/no-default-export': 'off',
         'import/no-named-export': 'off',
@@ -654,7 +674,7 @@ module.exports = {
             contexts: ['any'],
           },
         ], //Enforces a regular expression pattern on descriptions.
-        'jsdoc/match-name': 'error', //Reports the name portion of a JSDoc tag if matching or not matching a given regular expression.
+        'jsdoc/match-name': 'off', //Reports the name portion of a JSDoc tag if matching or not matching a given regular expression.
         'jsdoc/multiline-blocks': 'off', //Controls how and whether jsdoc blocks can be expressed as single or multiple line blocks.
         'jsdoc/newline-after-description': 'off', //Enforces a consistent padding of the block description.
         'jsdoc/no-bad-blocks': 'error', //This rule checks for multi-line-style comments which fail to meet the criteria of a jsdoc block.
@@ -680,7 +700,7 @@ module.exports = {
         'jsdoc/require-jsdoc': [
           'error',
           {
-            publicOnly: true,
+            publicOnly: false,
             require: {
               ArrowFunctionExpression: true,
               ClassDeclaration: true,
@@ -690,9 +710,9 @@ module.exports = {
               MethodDefinition: false,
             },
             contexts: [
-              "MethodDefinition:not([accessibility='private']) > FunctionExpression",
+              "MethodDefinition:not([accessibility='private']):not([key.name='execute']) > FunctionExpression",
               "ClassProperty:not([accessibility='private'])",
-              'TSPropertySignature',
+              ':not(TSAsExpression > TSTypeLiteral):not(TSTypeParameterInstantiation TSTypeLiteral) > TSPropertySignature',
               'TSInterfaceBody > TSMethodSignature',
               'TSEnumMember',
             ],
@@ -717,10 +737,10 @@ module.exports = {
         'jsdoc/tag-lines': 'off', //Enforces lines (or no lines) between tags.
         'jsdoc/valid-types': 'error', //Requires all types to be valid JSDoc or Closure compiler types without syntax errors.
         'prettier/prettier': 'error',
-        'promise/param-names': 'off',
-        'promise/no-return-wrap': 'off',
-        'promise/always-return': 'off',
-        'promise/catch-or-return': 'off',
+        'promise/param-names': 'error',
+        'promise/no-return-wrap': 'error',
+        'promise/always-return': 'error',
+        'promise/catch-or-return': 'error',
         'promise/prefer-await-to-callbacks': 'off',
         'promise/prefer-await-to-then': 'off',
         'promise/no-native': 'off',
@@ -731,6 +751,8 @@ module.exports = {
         'promise/no-new-statics': 'off',
         'promise/no-return-in-finally': 'off',
         'promise/valid-params': 'off', //Ensures the proper number of arguments are passed to Promise functions
+        'simple-import-sort/imports': 'error',
+        'simple-import-sort/exports': 'error',
       },
     },
   ],

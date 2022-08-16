@@ -169,7 +169,7 @@ module.exports = {
         'n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options': 'error', //`displayName` for dynamic-options-type node parameter must end with `Name or ID`
         'n8n-nodes-base/node-param-display-name-wrong-for-simplify': 'error', //`displayName` for Simplify node parameter must be Simplify
         'n8n-nodes-base/node-param-display-name-wrong-for-update-fields': 'error', //`displayName` for Update operation node parameter must be `Update Fields`
-        'n8n-nodes-base/node-param-fixed-collection-type-unsorted-items': 'error', //Items in a fixed-collection-type node parameter section must be alphabetized by `displayName` if five or more than five, unless the items are address fields.
+        'n8n-nodes-base/node-param-fixed-collection-type-unsorted-items': 'off', //Items in a fixed-collection-type node parameter section must be alphabetized by `displayName` if five or more than five, unless the items are address fields.
         'n8n-nodes-base/node-param-min-value-wrong-for-limit': 'error', //`minValue` for Limit node parameter must be a positive integer.
         'n8n-nodes-base/node-param-multi-options-type-unsorted-items': 'error', //Items in a multi-options-type node parameter must be alphabetized by `name` if five or more than five.
         'n8n-nodes-base/node-param-operation-option-action-miscased': 'error', //The property `action` in an option in an Operation node parameter must be sentence-cased.

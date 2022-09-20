@@ -42,7 +42,7 @@ module.exports = {
       files: ['package.json'],
       plugins: ['eslint-plugin-n8n-nodes-base'],
       rules: {
-        'n8n-nodes-base/community-package-json-author-email-still-default': 'off', //The `author.email` value in the `package.json` of a community package must be different from the default value `` or a user-defined default with `authorEmail`.
+        'n8n-nodes-base/community-package-json-author-email-still-default': 'off', //The `author.email` value in the `package.json` of a community package must be different from the default value `''` (empty string) or a user-defined default.
         'n8n-nodes-base/community-package-json-author-missing': 'error', //The `author` key must be present in the `package.json` of a community package.
         'n8n-nodes-base/community-package-json-author-name-missing': 'error', //The `author.name` key must be present in the `package.json` of a community package.
         'n8n-nodes-base/community-package-json-author-name-still-default': [
@@ -50,14 +50,14 @@ module.exports = {
           {
             authorName: '${{#REPO_OWNER#}}',
           },
-        ], //The `author.name` value in the `package.json` of a community package must be different from the default value `` or a user-defined default with `authorName`.
+        ], //The `author.name` value in the `package.json` of a community package must be different from the default value `''` (empty string) or a user-defined default.
         'n8n-nodes-base/community-package-json-description-missing': 'error', //The `description` key must be present in the `package.json` of a community package.
         'n8n-nodes-base/community-package-json-description-still-default': [
           'error',
           {
             description: 'This is a basis for community n8n nodes.',
           },
-        ], //The `description` value in the `package.json` of a community package must be different from the default value `` or a user-defined default value with `description`.
+        ], //The `description` value in the `package.json` of a community package must be different from the default value `''` (empty string) or a user-defined default.
         'n8n-nodes-base/community-package-json-keywords-missing': 'error', //The `keywords` key must be present in the `package.json` of a community package.
         'n8n-nodes-base/community-package-json-keywords-without-official-tag': 'error', //The `keywords` value in the `package.json` of a community package must be an array containing the value `'n8n-community-node-package'`.
         'n8n-nodes-base/community-package-json-license-missing': 'error', //The `description` key must be present in the `package.json` of a community package.
@@ -73,13 +73,13 @@ module.exports = {
           {
             name: '${{#REPO_NAME#}}',
           },
-        ], //The `name` key in the `package.json` of a community package must be different from the default value `n8n-nodes-<...>` or a user-defined default with `name`.
+        ], //The `name` key in the `package.json` of a community package must be different from the default value `n8n-nodes-<...>` or a user-defined default.
         'n8n-nodes-base/community-package-json-repository-url-still-default': [
           'error',
           {
             repositoryUrl: 'git+https://github.com/${{#REPO_FULLNAME#}}.git',
           },
-        ], //The `repository.url` value in the `package.json` of a community package must be different from the default value `https://github.com/<...>/n8n-nodes-<...>.git` or a user-defined default with `repositoryUrl`.
+        ], //The `repository.url` value in the `package.json` of a community package must be different from the default value `https://github.com/<...>/n8n-nodes-<...>.git` or a user-defined default.
         'n8n-nodes-base/community-package-json-version-missing': 'error', //The `version` key must be present in the `package.json` of a community package.
       },
     },
@@ -87,6 +87,7 @@ module.exports = {
       files: ['./credentials/**/*.ts'],
       plugins: ['eslint-plugin-n8n-nodes-base'],
       rules: {
+        'n8n-nodes-base/cred-class-field-authenticate-type-assertion': 'error', //In a credential class, the field `authenticate` must be typed `IAuthenticateGeneric`
         'n8n-nodes-base/cred-class-field-display-name-miscased': 'error', //`displayName` field in credential class must be title cased.
         'n8n-nodes-base/cred-class-field-display-name-missing-api': 'error', //`displayName` field in credential class must be end with `API`.
         'n8n-nodes-base/cred-class-field-display-name-missing-oauth2': 'error', //`displayName` field in credential class must mention `OAuth2` if the credential is OAuth2.
@@ -115,6 +116,7 @@ module.exports = {
         'n8n-nodes-base/node-class-description-inputs-wrong-trigger-node': 'error', //The number of `inputs` in node class description for trigger node should be zero.
         'n8n-nodes-base/node-class-description-missing-subtitle': 'error', //`subtitle` in node class description must be present.
         'n8n-nodes-base/node-class-description-name-unsuffixed-trigger-node': 'error', //`name` in node class description for trigger node must be suffixed with `-Trigger`.
+        'n8n-nodes-base/node-class-description-non-core-color-present': 'error', //`color` in node class description is deprected and must not be present, except for nodes whose icon is a Font Awesome icon - usually core nodes.
         'n8n-nodes-base/node-class-description-outputs-wrong': 'error', //The number of `outputs` in node class description for any node must be one, or two for If node, or four for Switch node.
         'n8n-nodes-base/node-dirname-against-convention': 'off', //Node dirname must match node filename, excluding the filename suffix. Example: `Test` node dirname matches `Test` section of `Test.node.ts` node filename.
         'n8n-nodes-base/node-execute-block-double-assertion-for-items': 'error', //In the `execute()` method there is no need to double assert the type of `items.length`.
@@ -123,9 +125,10 @@ module.exports = {
         'n8n-nodes-base/node-execute-block-wrong-error-thrown': 'error', //The `execute()` method in a node may only throw `NodeApiError` for failed API requests and `NodeOperationError` for internal errors, not the built-in `Error`. Refer to [`NodeErrors.ts`](https://github.com/n8n-io/n8n/blob/master/packages/workflow/src/NodeErrors.ts).
         'n8n-nodes-base/node-filename-against-convention': 'error', //Node filename must match `name` in node class description, excluding the filename suffix. Example: `Test.node.ts` matches `Test` in property `Test.description.name`.
         'n8n-nodes-base/node-param-array-type-assertion': 'error', //Array of node parameters must be typed, not type-asserted.
+        'n8n-nodes-base/node-param-collection-type-item-required': 'error', //Items in collection-type node parameter must not have a `required` property.
         'n8n-nodes-base/node-param-collection-type-unsorted-items': 'error', //Items in collection-type node parameter must be alphabetized by `name` if five or more than five.
         'n8n-nodes-base/node-param-color-type-unused': 'error', //`string`-type color-related node parameter must be `color`-type.
-        'n8n-nodes-base/node-param-default-missing': 'error', //`default` must be present in a node parameter.
+        'n8n-nodes-base/node-param-default-missing': 'error', //`default` must be present in a node parameter, except in node parameters under `modes`.
         'n8n-nodes-base/node-param-default-wrong-for-boolean': 'error', //`default` for boolean-type node parameter must be a boolean.
         'n8n-nodes-base/node-param-default-wrong-for-collection': 'error', //`default` for collection-type node parameter must be an object.
         'n8n-nodes-base/node-param-default-wrong-for-fixed-collection': 'error', //`default` for fixed-collection-type node parameter must be an object.
@@ -168,6 +171,7 @@ module.exports = {
         'n8n-nodes-base/node-param-display-name-excess-inner-whitespace': 'error', //`displayName` in node parameter or in fixed collection section must not contain excess inner whitespace. Applicable by extension to `name` in options-type or multi-options-type node parameter.
         'n8n-nodes-base/node-param-display-name-miscased-id': 'error', //`ID` in `displayName` in node parameter must be fully uppercased. Applicable by extension to `name` in options-type or multi-options-type node parameter.
         'n8n-nodes-base/node-param-display-name-miscased': 'error', //`displayName` in node parameter or in fixed collection section must title cased. Applicable by extension to `name` in options-type or multi-options-type node parameter.
+        'n8n-nodes-base/node-param-display-name-not-first-position': 'error', //By convention, `displayName` in node parameter must be placed first.
         'n8n-nodes-base/node-param-display-name-untrimmed': 'error', //`displayName` in node parameter or in fixed collection section must be trimmed. Applicable by extension to `name` in options-type or multi-options-type node parameter.
         'n8n-nodes-base/node-param-display-name-wrong-for-dynamic-multi-options': 'error', //`displayName` for dynamic-multi-options-type node parameter must end with `Names or IDs`
         'n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options': 'error', //`displayName` for dynamic-options-type node parameter must end with `Name or ID`
@@ -177,12 +181,14 @@ module.exports = {
         'n8n-nodes-base/node-param-min-value-wrong-for-limit': 'error', //`minValue` for Limit node parameter must be a positive integer.
         'n8n-nodes-base/node-param-multi-options-type-unsorted-items': 'error', //Items in a multi-options-type node parameter must be alphabetized by `name` if five or more than five.
         'n8n-nodes-base/node-param-operation-option-action-miscased': 'error', //The property `action` in an option in an Operation node parameter must be sentence-cased.
+        'n8n-nodes-base/node-param-operation-option-action-wrong-for-get-many': 'error', //The property `action` in a Get Many option in an Operation node parameter must start with `Get many`.
+        'n8n-nodes-base/node-param-operation-option-description-wrong-for-get-many': 'error', //The property `description` in a Get Many option in an Operation node parameter must mention `many` instead of `all`.
         'n8n-nodes-base/node-param-operation-option-without-action': 'error', //An option in an Operation node parameter must have an `action` property. The `action` property may or may not be identical to the `description` property.
         'n8n-nodes-base/node-param-operation-without-no-data-expression': 'error', //`noDataExpression` in an Operation node parameter must be present and enabled.
         'n8n-nodes-base/node-param-option-description-identical-to-name': 'error', //`description` in option in options-type node parameter must not be identical to `name`.
         'n8n-nodes-base/node-param-option-name-containing-star': 'error', //Option `name` in options-type node parameter must not contain `*`. Use `[All]` instead.
         'n8n-nodes-base/node-param-option-name-duplicate': 'error', //Option `name` in options-type node parameter must not be a duplicate.
-        'n8n-nodes-base/node-param-option-name-wrong-for-get-all': 'error', //Option `name` for Get All node parameter must be `Get All`
+        'n8n-nodes-base/node-param-option-name-wrong-for-get-many': 'error', //Option `name` for Get Many node parameter must be `Get Many`
         'n8n-nodes-base/node-param-option-name-wrong-for-upsert': 'error', //Option `name` for Upsert node parameter must be `Create or Update`.
         'n8n-nodes-base/node-param-option-value-duplicate': 'error', //Option `value` in options-type node parameter must not be a duplicate.
         'n8n-nodes-base/node-param-options-type-unsorted-items': 'error', //Items in options-type node parameter must be alphabetized by `name` if five or more than five.
@@ -191,8 +197,9 @@ module.exports = {
         'n8n-nodes-base/node-param-required-false': 'error', //`required: false` in node parameter must be removed because it is implied.
         'n8n-nodes-base/node-param-resource-with-plural-option': 'error', //Option `name` for a Resource node parameter must be singular.
         'n8n-nodes-base/node-param-resource-without-no-data-expression': 'error', //`noDataExpression` in a Resource node parameter must be present and enabled.
+        'n8n-nodes-base/node-param-type-options-max-value-present': 'error', //`maxValue` in `typeOptions` in Limit node parameter is deprecated and must not be present.
         'n8n-nodes-base/node-param-type-options-missing-from-limit': 'error', //`typeOptions` in Limit node parameter must be present.
-        'n8n-nodes-base/node-param-type-options-missing-from-password': 'error', //`typeOptions.password` must be set to `true` in a Password node parameter, to obscure the password input
+        'n8n-nodes-base/node-param-type-options-missing-from-password': 'error', //`typeOptions.password` must be set to `true` in a Password node parameter, to obscure the password input.
         'n8n-nodes-base/node-resource-description-filename-against-convention': 'error', //Resource description file must use singular form. Example: `UserDescription.ts`, not `UsersDescription.ts`.
       },
     },

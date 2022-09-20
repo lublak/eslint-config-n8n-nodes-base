@@ -163,6 +163,10 @@ function getConfig() {
         '@typescript-eslint/parser': ['.ts', '.d.ts'],
       },
       'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json'
+        },
         node: {
           extensions: ['.js', '.json', '.ts', '.d.ts'],
         },

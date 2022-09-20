@@ -26,6 +26,10 @@ module.exports = {
       '@typescript-eslint/parser': ['.ts', '.d.ts'],
     },
     'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.json',
+      },
       node: {
         extensions: ['.js', '.json', '.ts', '.d.ts'],
       },
@@ -613,8 +617,8 @@ module.exports = {
         yoda: 'off', //Require or disallow "Yoda" conditions
         'deprecation/deprecation': 'error', //Do not use deprecated APIs.
         'import/no-unresolved': 'error',
-        'import/named': 'error',
-        'import/default': 'error',
+        'import/named': 'off',
+        'import/default': 'off',
         'import/namespace': 'error',
         'import/no-namespace': 'off',
         'import/export': 'error',
@@ -702,11 +706,11 @@ module.exports = {
           {
             publicOnly: false,
             require: {
-              ArrowFunctionExpression: true,
+              ArrowFunctionExpression: false,
               ClassDeclaration: true,
               ClassExpression: true,
               FunctionDeclaration: true,
-              FunctionExpression: true,
+              FunctionExpression: false,
               MethodDefinition: false,
             },
             contexts: [
